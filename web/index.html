@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Figure Out Your Type</title>
+  <meta name="description" content="Add photos of people you'd like to date and find out your actual type: physical, emotional, spiritual, and style & lifestyle.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💘</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1 class="brand">Figure Out Your Type</h1>
+    <nav class="actions">
+      <button id="settingsButton" class="ghost" type="button">API key</button>
+      <button id="addButton" class="ghost" type="button" data-photos-only>Add photos</button>
+      <button id="analyzeButton" class="primary" type="button" data-photos-only disabled>Figure out my type</button>
+      <button id="backButton" class="ghost" type="button" hidden>← Back to photos</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="emptyView" class="dropzone">
+      <div class="heart" aria-hidden="true">♥</div>
+      <h2>Who are you drawn to?</h2>
+      <p>Paste (⌘V / Ctrl+V), drop or add photos of people you'd like to date.<br>
+         Add as many people as you like — the more, the clearer the pattern.</p>
+      <button id="emptyAddButton" type="button">Add photos…</button>
+    </section>
+
+    <section id="peopleView" hidden>
+      <h2 id="peopleCount"></h2>
+      <p class="muted">Each new photo starts a new person. Drop more photos onto a card, or use its +, if they're the same person.
+        Notes are optional but help a lot with emotional and spiritual type.</p>
+      <div id="peopleGrid" class="grid"></div>
+    </section>
+
+    <section id="reportView" hidden></section>
+  </main>
+
+  <div id="busy" class="busy" hidden>
+    <div class="spinner" aria-hidden="true"></div>
+    <p id="busyText" class="busy-title"></p>
+    <p class="muted">This usually takes a minute or two.</p>
+  </div>
+
+  <dialog id="settingsDialog">
+    <form method="dialog">
+      <h2>Your Anthropic API key</h2>
+      <p class="muted">This site has no server. Your key stays in this browser and is sent only to Anthropic's API
+        (claude-opus-5-5) when you click Figure out my type. Get a key at
+        <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a>.</p>
+      <input id="keyInput" type="password" placeholder="sk-ant-…" autocomplete="off" spellcheck="false">
+      <label class="check"><input id="rememberKey" type="checkbox" checked> Remember on this device</label>
+      <p id="keyStatus" class="muted small"></p>
+      <div class="row">
+        <button id="forgetKey" type="button" class="ghost">Forget key</button>
+        <span class="spacer"></span>
+        <button value="cancel" class="ghost">Close</button>
+        <button id="saveKey" value="save" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="feedbackDialog">
+    <form method="dialog">
+      <h2>Feedback</h2>
+      <p class="muted">What worked, what didn't, what you'd want next.</p>
+      <textarea id="feedbackText" rows="6"></textarea>
+      <p id="feedbackStatus" class="muted small"></p>
+      <div class="row">
+        <span class="spacer"></span>
+        <button value="cancel" class="ghost">Close</button>
+        <button id="sendFeedback" type="button" class="primary">Send</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="errorDialog">
+    <form method="dialog">
+      <h2>Something went wrong</h2>
+      <p id="errorText"></p>
+      <div class="row"><span class="spacer"></span><button class="primary">OK</button></div>
+    </form>
+  </dialog>
+
+  <button id="feedbackTab" class="feedback-tab" type="button">Feedback</button>
+  <input id="fileInput" type="file" accept="image/*" multiple hidden>
+
+  <script src="app.js"></script>
+</body>
+</html>

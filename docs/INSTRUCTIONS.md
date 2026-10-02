@@ -41,6 +41,20 @@ The physical read covers only visible features and never labels race, ethnicity,
 Click **Feedback** in the bottom-right corner. Entries are saved to
 `~/Library/Application Support/Figure Out Your Type/Feedback.md`.
 
+## Website
+
+The same tool runs in any browser at **https://amalmehta.github.io/FigureOutYourType/**.
+
+1. Click **API key**, paste your Anthropic key and click **Save**. Untick *Remember on this device* to keep it
+   only until you close the tab. The site has no server: the key stays in your browser and goes only to Anthropic's API.
+2. Paste, drop or add photos, group them and add notes as in the Mac app (a photo's **×** removes it).
+3. Click **Figure out my type**.
+
+**Feedback** (bottom-right) opens a pre-filled GitHub issue.
+
+To run it locally: `python3 -m http.server 8765 --directory web`, then open http://localhost:8765.
+Pushing changes under `web/` to `main` redeploys the site automatically (`.github/workflows/pages.yml`).
+
 ## Test
 
 ```bash

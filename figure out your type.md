@@ -48,7 +48,8 @@ Asked and answered (2026-10-02):
 - Analysis: Claude API (claude-opus-5-5) with your own API key, saved in the Mac Keychain.
 - Inputs: photos plus an optional note per person (approved addition) so emotional and spiritual type have real input.
 - Sensitive traits: physical type covers visible features only — never race, ethnicity, religion, orientation or health.
-- Scope now: Mac app. GitHub repo added 2026-10-02 (private, spec included at its current path); no website yet.
+- Scope now: Mac app. GitHub repo added 2026-10-02 (spec included at its current path).
+- Website (2026-10-02): web version of the app, each visitor uses their own API key (no server), hosted on GitHub Pages. Pages isn't available for private repos on this plan, so the repo was made public.
 
 Decided without asking:
 - Native SwiftUI app built with Swift Package Manager (no Xcode project); scripts/build-app.sh wraps it into "Figure Out Your Type.app" (ad-hoc signed, macOS 14+).
@@ -58,7 +59,9 @@ Decided without asking:
 - Nothing is saved between launches (photos, notes and reports live only in memory).
 - Feedback tab saves to ~/Library/Application Support/Figure Out Your Type/Feedback.md (no server to send it to).
 - The ANTHROPIC_API_KEY environment variable is used if no key is saved in Settings.
-- Not yet verified: a live API call and the report screen, since no API key was available during the build.
+- Website: plain HTML/CSS/JS in web/, no build step or libraries. The key is kept in localStorage only if "Remember on this device" is ticked. Feedback opens a pre-filled GitHub issue.
+- Website was tested with a mocked API response (layout, phone width, dark mode, errors) and a real request with an invalid key (confirms the browser can reach the API). The README's Sample Report image uses that made-up sample data and is labelled as a sample.
+- Not yet verified: a real analysis with a valid API key, in either the Mac app or the website.
 
 CHANGELOG:
 
@@ -79,3 +82,4 @@ CHANGELOG:
 - 2026-10-02 — added a DELIVERABLES field after CONTEXT
 - 2026-10-02 — built the Mac app (Figure Out Your Type); filled in OPEN QUESTIONS / ASSUMPTIONS
 - 2026-10-02 — put on GitHub as private repo FigureOutYourType with README, docs/INSTRUCTIONS.md and docs/FILE-STRUCTURE.md
+- 2026-10-02 — built the website (web/), deployed to GitHub Pages; repo made public

@@ -22,5 +22,12 @@ Sources/FigureOutYourType/        The Mac app (SwiftUI)
   FeedbackView.swift              Feedback sheet, saved to Feedback.md
 
 Tests/TypeCoreTests/              Unit tests for image prep, request building and response parsing
+
+web/                              The website (static, no build step), same prompt and schema as TypeCore
+  index.html                      Page layout, dialogs (API key, feedback, errors)
+  style.css                       Styles, light and dark
+  app.js                          Photos, paste/drop, the Claude request, report rendering
+
+.github/workflows/pages.yml       Deploys web/ to GitHub Pages on every push to main
 docs/                             Instructions, this file, README images
 ```

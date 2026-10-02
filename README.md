@@ -1,8 +1,12 @@
 # Figure Out Your Type
 
-A Mac app that looks at photos of people you'd like to date and works out your actual type: physical, emotional, spiritual, and style & lifestyle.
+Add photos of people you'd like to date and find out your actual type: physical, emotional, spiritual, and style & lifestyle. Available as a Mac app and a website.
+
+**[Try the website →](https://amalmehta.github.io/FigureOutYourType/)**
 
 ![Start screen](docs/images/Start%20Screen.png)
+
+![Sample report](docs/images/Sample%20Report.jpg)
 
 ## How it works
 
@@ -21,6 +25,7 @@ flowchart LR
 
 ## Links
 
+- [Website](https://amalmehta.github.io/FigureOutYourType/)
 - [Instructions](docs/INSTRUCTIONS.md): setup, run, use
 - [File Structure](docs/FILE-STRUCTURE.md): what's where
 - [Spec](figure%20out%20your%20type.md): the brief, decisions and changelog
