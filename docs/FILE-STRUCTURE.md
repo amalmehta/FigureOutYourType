@@ -9,6 +9,7 @@ Sources/TypeCore/                 Everything that isn't UI
   TypeAnalyzer.swift              Builds the Claude request, calls the API, reads the answer, errors
   Report.swift                    The report's shape (TypeReport) and the JSON schema Claude must follow
   Person.swift                    A person = photos + optional note
+  Survey.swift                    The quick survey: questions, answers, and the text sent to Claude
   ImagePrep.swift                 Shrinks any image to a ≤1568px upright JPEG
   Keychain.swift                  Saves and loads the API key
 
@@ -20,13 +21,14 @@ Sources/FigureOutYourType/        The Mac app (SwiftUI)
   ReportView.swift                The finished "your type" screen
   SettingsView.swift              API key entry
   FeedbackView.swift              Feedback sheet, saved to Feedback.md
+  SurveyView.swift                The quick survey sheet
 
-Tests/TypeCoreTests/              Unit tests for image prep, request building and response parsing
+Tests/TypeCoreTests/              Unit tests for image prep, the survey, request building and response parsing
 
 web/                              The website (static, no build step), same prompt and schema as TypeCore
-  index.html                      Page layout, dialogs (API key, feedback, errors)
+  index.html                      Page layout, dialogs (API key, quick survey, feedback, errors)
   style.css                       Styles, light and dark
-  app.js                          Photos, paste/drop, the Claude request, report rendering
+  app.js                          Photos, paste/drop, quick survey, the Claude request, report rendering
 
 .github/workflows/pages.yml       Deploys web/ to GitHub Pages on every push to main
 docs/                             Instructions, this file, README images

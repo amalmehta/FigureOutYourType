@@ -7,13 +7,14 @@ struct ContentView: View {
     @State private var showingImporter = false
     @State private var importTarget: Person.ID?
     @State private var showingFeedback = false
+    @State private var showingSurvey = false
 
     var body: some View {
         Group {
             if let report = model.report {
                 ReportView(report: report, people: model.people)
             } else if model.people.isEmpty {
-                EmptyDropZone(showImporter: { openImporter(for: nil) })
+                EmptyDropZone(showImporter: { openImporter(for: nil) }, showSurvey: { showingSurvey = true })
             } else {
                 peopleGrid
             }
@@ -36,6 +37,7 @@ struct ContentView: View {
             if case let .success(urls) = result { model.add(fileURLs: urls, to: importTarget) }
         }
         .sheet(isPresented: $showingFeedback) { FeedbackView() }
+        .sheet(isPresented: $showingSurvey) { SurveyView() }
         .alert("Something went wrong", isPresented: Binding(
             get: { model.errorMessage != nil },
             set: { if !$0 { model.errorMessage = nil } }
@@ -55,6 +57,12 @@ struct ContentView: View {
             }
         } else {
             ToolbarItemGroup {
+                Button { showingSurvey = true } label: {
+                    Label(model.survey.isEmpty ? "Quick Survey" : "Quick Survey ✓",
+                          systemImage: model.survey.isEmpty ? "list.bullet.clipboard" : "checkmark.circle")
+                        .labelStyle(.titleAndIcon)
+                }
+                .help("Five optional questions about you")
                 Button { openImporter(for: nil) } label: { Label("Add Photos", systemImage: "photo.badge.plus") }
                 Button { model.paste() } label: { Label("Paste", systemImage: "doc.on.clipboard") }
                 Button {
@@ -98,6 +106,7 @@ struct ContentView: View {
 
 private struct EmptyDropZone: View {
     let showImporter: () -> Void
+    let showSurvey: () -> Void
 
     var body: some View {
         VStack(spacing: 14) {
@@ -112,6 +121,8 @@ private struct EmptyDropZone: View {
             Button("Add Photos…", action: showImporter)
                 .controlSize(.large)
                 .padding(.top, 6)
+            Button("Take the quick survey (optional)", action: showSurvey)
+                .buttonStyle(.link)
         }
         .padding(40)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

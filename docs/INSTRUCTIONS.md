@@ -28,10 +28,13 @@ To run straight from source instead: `swift run`.
    Each photo starts a new person.
 2. **Group photos of the same person.** Drop more photos onto that person's card, or click its **+**.
    Right-click a photo to remove it; the trash icon removes the whole person.
-3. **Add notes (optional).** A line about what each person is like ("funny, ambitious, very spiritual")
+3. **Take the quick survey (optional).** Click **Quick Survey** for five questions about you: what you notice
+   first, the qualities that draw you in (up to 3), how much shared spiritual beliefs or values matter,
+   deal-breakers, and anything else. Claude uses your answers alongside the photos and points out where they disagree.
+4. **Add notes (optional).** A line about what each person is like ("funny, ambitious, very spiritual")
    makes the emotional and spiritual read much better. Without notes those sections are marked low confidence.
-4. Click **Figure Out My Type** (⌘↩). It takes a minute or two.
-5. Read your type. **Back to Photos** returns to your cards; **File → Start Over** (⌘N) clears everything.
+5. Click **Figure Out My Type** (⌘↩). It takes a minute or two.
+6. Read your type. **Back to Photos** returns to your cards; **File → Start Over** (⌘N) clears everything.
 
 Photos and notes go to Anthropic's API only when you click Figure Out My Type. Nothing is saved between launches.
 The physical read covers only visible features and never labels race, ethnicity, religion, orientation or health.
@@ -47,7 +50,7 @@ The same tool runs in any browser at **https://amalmehta.github.io/FigureOutYour
 
 1. Click **API key**, paste your Anthropic key and click **Save**. Untick *Remember on this device* to keep it
    only until you close the tab. The site has no server: the key stays in your browser and goes only to Anthropic's API.
-2. Paste, drop or add photos, group them and add notes as in the Mac app (a photo's **×** removes it).
+2. Paste, drop or add photos, group them, add notes and take the **Quick survey** as in the Mac app (a photo's **×** removes it).
 3. Click **Figure out my type**.
 
 **Feedback** (bottom-right) opens a pre-filled GitHub issue.

@@ -13,6 +13,7 @@ Add photos of people you'd like to date and find out your actual type: physical,
 ```mermaid
 flowchart LR
     A["Paste, drop or add photos<br/>(one card per person)"] --> B["Optional note per person<br/>'kind, outdoorsy, into meditation'"]
+    Q["Optional quick survey<br/>5 questions about you"] --> C
     B --> C["Figure Out My Type"]
     C --> D["Claude looks for patterns<br/>across everyone"]
     D --> E["Your type"]

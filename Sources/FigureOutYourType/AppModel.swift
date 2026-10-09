@@ -6,6 +6,7 @@ import UniformTypeIdentifiers
 @MainActor @Observable
 final class AppModel {
     var people: [Person] = []
+    var survey = Survey()
     var report: TypeReport?
     var isAnalyzing = false
     var errorMessage: String?
@@ -113,7 +114,7 @@ final class AppModel {
         isAnalyzing = true
         defer { isAnalyzing = false }
         do {
-            report = try await TypeAnalyzer(apiKey: key).analyze(people)
+            report = try await TypeAnalyzer(apiKey: key).analyze(people, survey: survey)
         } catch {
             errorMessage = error.localizedDescription
         }

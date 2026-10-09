@@ -13,6 +13,7 @@ Guidelines:
 - Physical: describe only what is visible — hair, build, height cues, facial hair, grooming, expression, apparent age range, how they carry themselves. Never name or guess race, ethnicity, religion, sexual orientation, health or disability.
 - Emotional and spiritual: base these mainly on the user's notes. Without notes you can only read surface cues (expression, setting, activity, the energy a photo gives off) — say so and mark those traits low confidence.
 - Style & lifestyle: clothing, aesthetic, settings, hobbies or activities visible in the photos or notes.
+- The user may also answer a short survey about themselves. Use it to sharpen every dimension, especially emotional and spiritual. Where their answers and the photos disagree, say so kindly in "summary".
 - Refer to people as "Person 1", "Person 2", etc. Don't try to identify anyone.
 - Write warmly and directly to the user ("you're drawn to…"). Keep each detail to one or two sentences.
 - "headline" is a short, vivid phrase that sums up the type. "caveats" says plainly what photos can't tell you and how much to trust this read.`;
@@ -56,11 +57,20 @@ const REPORT_SCHEMA = {
   additionalProperties: false,
 };
 
+// Keep in sync with Sources/TypeCore/Survey.swift.
+const SURVEY = {
+  noticeFirst: ["Smile and eyes", "Build", "Style", "Energy and vibe", "Something else"],
+  qualities: ["Warmth", "Humor", "Ambition", "Calm", "Adventurousness", "Intelligence", "Emotional openness", "Loyalty"],
+  maxQualities: 3,
+  values: ["Very important to share", "Nice to have", "Doesn't matter to me"],
+};
+
 // ---------- State ----------
 
 /** @type {{id: string, note: string, photos: {id: string, dataUrl: string}[]}[]} */
 let people = [];
 let report = null;
+let survey = { noticeFirst: null, qualities: [], values: null, dealBreakers: "", anythingElse: "" };
 let sessionKey = null; // used when "remember" is off
 const uid = () => Math.random().toString(36).slice(2);
 const $ = (id) => document.getElementById(id);
@@ -114,6 +124,8 @@ function buildRequestBody() {
   const withPhotos = people.filter((p) => p.photos.length);
   if (!withPhotos.length) throw new Error("Add at least one photo first.");
   const content = [];
+  const surveyText = surveyPromptText();
+  if (surveyText) content.push({ type: "text", text: surveyText });
   withPhotos.forEach((person, index) => {
     const note = person.note.trim();
     const count = person.photos.length;
@@ -265,6 +277,41 @@ function renderReport() {
   );
 }
 
+// ---------- Survey ----------
+
+function surveyPromptText() {
+  const lines = [];
+  if (survey.noticeFirst) lines.push(`- What I notice first: ${survey.noticeFirst}`);
+  if (survey.qualities.length) lines.push(`- Qualities that draw me in most: ${survey.qualities.join(", ")}`);
+  if (survey.values) lines.push(`- Shared spiritual beliefs or values: ${survey.values}`);
+  if (survey.dealBreakers.trim()) lines.push(`- Deal-breakers: ${survey.dealBreakers.trim()}`);
+  if (survey.anythingElse.trim()) lines.push(`- Anything else: ${survey.anythingElse.trim()}`);
+  return lines.length ? "About me, from a short survey:\n" + lines.join("\n") : null;
+}
+
+function renderChips(containerId, options, isSelected, toggle) {
+  $(containerId).replaceChildren(...options.map((option) => {
+    const chip = el("button", { type: "button", className: "chip", textContent: option });
+    chip.setAttribute("aria-pressed", String(isSelected(option)));
+    chip.addEventListener("click", () => { toggle(option); renderSurvey(); });
+    return chip;
+  }));
+}
+
+function renderSurvey() {
+  renderChips("noticeChips", SURVEY.noticeFirst, (o) => survey.noticeFirst === o,
+    (o) => (survey.noticeFirst = survey.noticeFirst === o ? null : o));
+  renderChips("qualityChips", SURVEY.qualities, (o) => survey.qualities.includes(o), (o) => {
+    if (survey.qualities.includes(o)) survey.qualities = survey.qualities.filter((q) => q !== o);
+    else if (survey.qualities.length < SURVEY.maxQualities) survey.qualities.push(o);
+  });
+  renderChips("valuesChips", SURVEY.values, (o) => survey.values === o,
+    (o) => (survey.values = survey.values === o ? null : o));
+  $("dealBreakers").value = survey.dealBreakers;
+  $("anythingElse").value = survey.anythingElse;
+  $("surveyButton").textContent = surveyPromptText() ? "Quick survey ✓" : "Quick survey";
+}
+
 // ---------- Dialogs ----------
 
 function showError(message) {
@@ -306,6 +353,16 @@ $("emptyAddButton").addEventListener("click", () => pickFiles());
 $("analyzeButton").addEventListener("click", figureOutType);
 $("backButton").addEventListener("click", () => { report = null; render(); });
 $("settingsButton").addEventListener("click", () => openSettings());
+const openSurvey = () => { renderSurvey(); $("surveyDialog").showModal(); };
+$("surveyButton").addEventListener("click", openSurvey);
+$("emptySurveyButton").addEventListener("click", openSurvey);
+$("dealBreakers").addEventListener("input", (e) => { survey.dealBreakers = e.target.value; });
+$("anythingElse").addEventListener("input", (e) => { survey.anythingElse = e.target.value; });
+$("surveyDialog").addEventListener("close", renderSurvey);
+$("clearSurvey").addEventListener("click", () => {
+  survey = { noticeFirst: null, qualities: [], values: null, dealBreakers: "", anythingElse: "" };
+  renderSurvey();
+});
 $("saveKey").addEventListener("click", (e) => {
   const key = $("keyInput").value.trim();
   if (!key) { e.preventDefault(); $("keyStatus").textContent = "Paste a key first."; return; }
@@ -323,3 +380,4 @@ $("sendFeedback").addEventListener("click", () => {
 });
 
 render();
+renderSurvey();

@@ -61,6 +61,7 @@ Decided without asking:
 - The ANTHROPIC_API_KEY environment variable is used if no key is saved in Settings.
 - Website: plain HTML/CSS/JS in web/, no build step or libraries. The key is kept in localStorage only if "Remember on this device" is ticked. Feedback opens a pre-filled GitHub issue.
 - Website was tested with a mocked API response (layout, phone width, dark mode, errors) and a real request with an invalid key (confirms the browser can reach the API). The README's Sample Report image uses that made-up sample data and is labelled as a sample.
+- Quick survey (2026-10-09, asked and answered): five optional questions about the user, sent to Claude with the photos, in both the Mac app and the website. Questions: what you notice first; up to 3 qualities; how much shared spiritual beliefs/values matter; deal-breakers; anything else. Disagreements between answers and photos go in the report summary (no new report section). Answers aren't saved between launches; Start Over keeps them.
 - Not yet verified: a real analysis with a valid API key, in either the Mac app or the website.
 
 CHANGELOG:
@@ -83,3 +84,4 @@ CHANGELOG:
 - 2026-10-02 — built the Mac app (Figure Out Your Type); filled in OPEN QUESTIONS / ASSUMPTIONS
 - 2026-10-02 — put on GitHub as private repo FigureOutYourType with README, docs/INSTRUCTIONS.md and docs/FILE-STRUCTURE.md
 - 2026-10-02 — built the website (web/), deployed to GitHub Pages; repo made public
+- 2026-10-09 — added a quick survey (Mac app and website)

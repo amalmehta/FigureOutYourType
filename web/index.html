@@ -13,6 +13,7 @@
     <h1 class="brand">Figure Out Your Type</h1>
     <nav class="actions">
       <button id="settingsButton" class="ghost" type="button">API key</button>
+      <button id="surveyButton" class="ghost" type="button" data-photos-only>Quick survey</button>
       <button id="addButton" class="ghost" type="button" data-photos-only>Add photos</button>
       <button id="analyzeButton" class="primary" type="button" data-photos-only disabled>Figure out my type</button>
       <button id="backButton" class="ghost" type="button" hidden>← Back to photos</button>
@@ -26,6 +27,7 @@
       <p>Paste (⌘V / Ctrl+V), drop or add photos of people you'd like to date.<br>
          Add as many people as you like — the more, the clearer the pattern.</p>
       <button id="emptyAddButton" type="button">Add photos…</button>
+      <button id="emptySurveyButton" type="button" class="link">Take the quick survey (optional)</button>
     </section>
 
     <section id="peopleView" hidden>
@@ -58,6 +60,25 @@
         <span class="spacer"></span>
         <button value="cancel" class="ghost">Close</button>
         <button id="saveKey" value="save" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="surveyDialog" class="wide">
+    <form method="dialog">
+      <h2>Quick survey</h2>
+      <p class="muted">Five optional questions about you. They help Claude read your emotional and spiritual type.</p>
+      <fieldset><legend>1. What do you notice first?</legend><div id="noticeChips" class="chips"></div></fieldset>
+      <fieldset><legend>2. Which qualities draw you in most? (up to 3)</legend><div id="qualityChips" class="chips"></div></fieldset>
+      <fieldset><legend>3. How much do shared spiritual beliefs or values matter?</legend><div id="valuesChips" class="chips"></div></fieldset>
+      <fieldset><legend><label for="dealBreakers">4. Any deal-breakers?</label></legend>
+        <textarea id="dealBreakers" rows="2" placeholder="e.g. smoking, no sense of humor"></textarea></fieldset>
+      <fieldset><legend><label for="anythingElse">5. Anything else about what you're looking for?</label></legend>
+        <textarea id="anythingElse" rows="3" placeholder="Optional"></textarea></fieldset>
+      <div class="row">
+        <button id="clearSurvey" type="button" class="ghost">Clear answers</button>
+        <span class="spacer"></span>
+        <button class="primary">Done</button>
       </div>
     </form>
   </dialog>

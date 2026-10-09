@@ -40,6 +40,8 @@ public struct TypeAnalyzer: Sendable {
     surface cues (expression, setting, activity, the energy a photo gives off) — say so and mark those \
     traits low confidence.
     - Style & lifestyle: clothing, aesthetic, settings, hobbies or activities visible in the photos or notes.
+    - The user may also answer a short survey about themselves. Use it to sharpen every dimension, \
+    especially emotional and spiritual. Where their answers and the photos disagree, say so kindly in "summary".
     - Refer to people as "Person 1", "Person 2", etc. Don't try to identify anyone.
     - Write warmly and directly to the user ("you're drawn to…"). Keep each detail to one or two sentences.
     - "headline" is a short, vivid phrase that sums up the type. "caveats" says plainly what photos \
@@ -54,7 +56,7 @@ public struct TypeAnalyzer: Sendable {
         self.session = session
     }
 
-    public func analyze(_ people: [Person]) async throws -> TypeReport {
+    public func analyze(_ people: [Person], survey: Survey = Survey()) async throws -> TypeReport {
         var request = URLRequest(url: Self.endpoint, timeoutInterval: 600)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "content-type")
@@ -62,7 +64,7 @@ public struct TypeAnalyzer: Sendable {
         request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
         // Lets the API re-run a declined request on Anthropic's recommended fallback model.
         request.setValue("server-side-fallback-2026-07-01", forHTTPHeaderField: "anthropic-beta")
-        request.httpBody = try Self.requestBody(for: people)
+        request.httpBody = try Self.requestBody(for: people, survey: survey)
 
         let (data, response) = try await session.data(for: request)
         let status = (response as? HTTPURLResponse)?.statusCode ?? 0
@@ -74,11 +76,14 @@ public struct TypeAnalyzer: Sendable {
 
     // MARK: - Request
 
-    static func requestBody(for people: [Person]) throws -> Data {
+    static func requestBody(for people: [Person], survey: Survey = Survey()) throws -> Data {
         let withPhotos = people.filter { !$0.photos.isEmpty }
         guard !withPhotos.isEmpty else { throw AnalyzerError.noPhotos }
 
         var content: [[String: Any]] = []
+        if let surveyText = survey.promptText {
+            content.append(["type": "text", "text": surveyText])
+        }
         for (index, person) in withPhotos.enumerated() {
             let note = person.note.trimmingCharacters(in: .whitespacesAndNewlines)
             let photoWord = person.photos.count == 1 ? "photo" : "photos"
